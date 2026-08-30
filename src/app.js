@@ -1,9 +1,10 @@
-import { bankDeposits, processorSettlements } from "./data.js";
+import { createSettlementBatch, initialBatch } from "./data.js";
 import { answerQuestion, SUGGESTED_QUESTIONS } from "./qaAgent.js";
 import { formatMoney, reconcileSettlements, statusLabel } from "./reconciliation.js";
 
 const state = {
-  reconciliation: reconcileSettlements(processorSettlements, bankDeposits),
+  batch: initialBatch,
+  reconciliation: reconcileSettlements(initialBatch.processorSettlements, initialBatch.bankDeposits),
   filter: "all"
 };
 
@@ -18,7 +19,8 @@ const elements = {
   quickQuestions: document.querySelector("#quickQuestions"),
   qaForm: document.querySelector("#qaForm"),
   questionInput: document.querySelector("#questionInput"),
-  answerBox: document.querySelector("#answerBox")
+  answerBox: document.querySelector("#answerBox"),
+  loadingOverlay: document.querySelector("#loadingOverlay")
 };
 
 function render() {
@@ -81,10 +83,30 @@ elements.statusFilter.addEventListener("change", (event) => {
 });
 
 elements.rerunButton.addEventListener("click", () => {
-  state.reconciliation = reconcileSettlements(processorSettlements, bankDeposits);
-  render();
-  ask("What is the match rate?");
+  refreshBatch();
 });
+
+async function refreshBatch() {
+  setLoading(true);
+  await delay(650);
+  state.batch = createSettlementBatch(`${Date.now()}-${globalThis.crypto?.randomUUID?.() ?? Math.random()}`);
+  state.reconciliation = reconcileSettlements(state.batch.processorSettlements, state.batch.bankDeposits);
+  state.filter = "all";
+  elements.statusFilter.value = "all";
+  render();
+  ask(`New ${state.batch.batchId} reconciled. What is the match rate?`);
+  setLoading(false);
+}
+
+function setLoading(isLoading) {
+  elements.rerunButton.disabled = isLoading;
+  elements.rerunButton.classList.toggle("is-loading", isLoading);
+  elements.loadingOverlay.hidden = !isLoading;
+}
+
+function delay(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
 
 elements.quickQuestions.addEventListener("click", (event) => {
   const question = event.target.dataset.question;

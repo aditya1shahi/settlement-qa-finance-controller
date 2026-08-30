@@ -14,8 +14,9 @@
             <p class="eyebrow">AI Finance Controller</p>
             <h1>Settlement Q&A Agent</h1>
           </div>
-          <button id="rerunButton" class="icon-button" type="button" title="Run reconciliation again" aria-label="Run reconciliation again">
-            ↻
+          <button id="rerunButton" class="icon-button" type="button" title="Generate a new batch and reconcile it" aria-label="Generate a new batch and reconcile it">
+            <span class="refresh-symbol" aria-hidden="true">↻</span>
+            <span class="button-loader" aria-hidden="true"></span>
           </button>
         </header>
 
@@ -51,6 +52,12 @@
                 <option value="duplicate_processor_reference">Duplicate processor reference</option>
                 <option value="date_out_of_tolerance">Date out of tolerance</option>
               </select>
+            </div>
+            <div id="loadingOverlay" class="loading-overlay" hidden>
+              <div class="loading-card">
+                <span class="loading-spinner" aria-hidden="true"></span>
+                <strong>Reconciling new settlement batch</strong>
+              </div>
             </div>
             <div class="table-wrap">
               <table>
