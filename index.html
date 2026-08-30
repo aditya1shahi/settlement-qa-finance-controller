@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Settlement Q&A Finance Controller</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <section class="workspace" aria-label="Settlement controller workspace">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">AI Finance Controller</p>
+            <h1>Settlement Q&A Agent</h1>
+          </div>
+          <button id="rerunButton" class="icon-button" type="button" title="Run reconciliation again" aria-label="Run reconciliation again">
+            ↻
+          </button>
+        </header>
+
+        <section class="metrics" aria-label="Reconciliation metrics">
+          <article>
+            <span>Records</span>
+            <strong id="recordCount">0</strong>
+          </article>
+          <article>
+            <span>Matched</span>
+            <strong id="matchedCount">0</strong>
+          </article>
+          <article>
+            <span>Match Rate</span>
+            <strong id="matchRate">0%</strong>
+          </article>
+          <article>
+            <span>Exceptions</span>
+            <strong id="exceptionCount">0</strong>
+          </article>
+        </section>
+
+        <section class="main-grid">
+          <article class="panel">
+            <div class="panel-heading">
+              <h2>Settlement Batch</h2>
+              <select id="statusFilter" aria-label="Filter settlement rows">
+                <option value="all">All statuses</option>
+                <option value="matched">Matched</option>
+                <option value="amount_mismatch">Amount mismatch</option>
+                <option value="missing_bank_record">Missing bank record</option>
+                <option value="missing_processor_record">Missing processor record</option>
+                <option value="duplicate_processor_reference">Duplicate processor reference</option>
+                <option value="date_out_of_tolerance">Date out of tolerance</option>
+              </select>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Settlement</th>
+                    <th>Processor</th>
+                    <th>Bank</th>
+                    <th>Status</th>
+                    <th>Evidence</th>
+                  </tr>
+                </thead>
+                <tbody id="settlementRows"></tbody>
+              </table>
+            </div>
+          </article>
+
+          <aside class="panel qa-panel">
+            <div class="panel-heading">
+              <h2>Ask the Agent</h2>
+            </div>
+            <div class="quick-questions" id="quickQuestions"></div>
+            <form id="qaForm" class="qa-form">
+              <input id="questionInput" name="question" type="text" autocomplete="off" placeholder="Ask about match rate, exceptions, or a settlement ID" />
+              <button type="submit">Ask</button>
+            </form>
+            <div id="answerBox" class="answer" role="status" aria-live="polite"></div>
+          </aside>
+        </section>
+      </section>
+    </main>
+    <script type="module" src="./src/app.js"></script>
+  </body>
+</html>

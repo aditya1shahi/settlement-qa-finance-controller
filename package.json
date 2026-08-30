@@ -1,0 +1,19 @@
+{
+  "name": "settlement-qa-finance-controller",
+  "version": "1.0.0",
+  "description": "A trust-oriented finance controller prototype for settlement reconciliation and grounded Q&A.",
+  "type": "module",
+  "scripts": {
+    "test": "node scripts/run-tests.mjs",
+    "start": "node scripts/serve.mjs"
+  },
+  "keywords": [
+    "finance",
+    "settlement",
+    "reconciliation",
+    "qa-agent",
+    "audit"
+  ],
+  "author": "",
+  "license": "MIT"
+}
